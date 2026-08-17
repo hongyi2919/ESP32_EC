@@ -1,0 +1,70 @@
+ESP32_EC
+將專案上傳到git 步驟
+
+1.登入 GitHub，點擊右上角的 + 號選擇 New repository。
+
+2.輸入 Repository name（例如：embedded-control-test）。
+
+3.不要勾選 "Add a README file"、".gitignore" 或 "Choose a license"（保持空的 Repository，才能避免本地與遠端版本歷史不一致）。
+
+4.點擊 Create repository，並複製頁面顯示的 HTTPS 網址
+
+本地端
+cd 專案名稱 (或是專案資料夾 Opem Git Bash here)
+1.git init
+2.echo "# 專案名稱" >> README.md   # 建立 README
+3.git add .                        # 加入所有檔案
+4.git status                       # 確認檔案已 staged
+5.git commit -m "initial commit"   # 本地建立commit
+6.git remote add origin https://github.com/hongyi2919/ESP32_EC.git  #剛剛Create repository網址
+7.git remote -v                    # 確認遠端設定
+(應該會看到
+origin  https://github.com/hongyi2919/ESP32_EC.git (fetch)
+origin  https://github.com/hongyi2919/ESP32_EC.git (push)
+)
+8.git push                         #拋上雲端
+
+刪除
+1.git reset --hard HEAD^  #刪除本地commit
+已經推到遠端（雲端也有）
+1.git reset --hard HEAD^
+2.git push --force
+
+設定 branch 並推送
+GitHub 預設 branch 是 main，所以建議把本地 master 改成 main
+1.git branch -M main
+2.git push -u origin main
+
+當要修改某次自己的commit
+git add .            # 把要補進去的檔案放到 staging area
+git commit --amend   # 修改最近一次 commit，把 staged 檔案加進去
+git commit --amend --no-edit   # 修改最近一次 commit，且不編輯內容
+git push --force origin main   # 強制推送到遠端 origin 的 main 分支
+git push --force origin 分支名稱   # 強制推送到遠端 origin 的 某某 分支
+
+
+分支
+git checkout -b feature  # 建立名叫feature分支並切換過去
+git branch feature       # 建立分支feature，但不切換
+git checkout feature     # 切換到指定分支feature
+---------------------------------------
+git commit -m "新增功能或修正"
+git push origin feature
+
+合併分支
+git checkout main                # 切換到目標分支
+git merge feature                # 合併 feature-name 到 main
+git push origin main             # 推送到github
+
+查看分支
+git branch
+
+清理多於分枝
+git branch -D function_B             # 本地端
+git branch -D feature
+git push origin --delete function_B  # 雲端上
+git push origin --delete feature
+
+查看有哪些修改
+git status
+hello

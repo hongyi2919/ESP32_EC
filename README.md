@@ -70,7 +70,7 @@ git add .
 git status
 ```
 
-確認需要的檔案已經被加入 Staging Area。
+確認需要的檔案已經加入 Staging Area。
 
 ### 5. 建立 Commit
 
@@ -107,7 +107,7 @@ git push
 
 # Branch
 
-GitHub 預設主要 Branch 為 `main`，因此建議將本地的 `master` 改成 `main`。
+GitHub 預設主要 Branch 為 `main`，因此建議將本地 `master` 改成 `main`。
 
 ### 將 Branch 改成 main
 
@@ -115,13 +115,13 @@ GitHub 預設主要 Branch 為 `main`，因此建議將本地的 `master` 改成
 git branch -M main
 ```
 
-### Push main 到 GitHub
+### 第一次 Push main
 
 ```bash
 git push -u origin main
 ```
 
-之後可以直接使用：
+之後可以直接：
 
 ```bash
 git push
@@ -153,34 +153,32 @@ git push origin feature
 
 如果要將新的修改加入最近一次 Commit：
 
-### 1. 加入 Staging Area
+### 加入 Staging Area
 
 ```bash
 git add .
 ```
 
-### 2. 修改最近一次 Commit
+### 修改最近一次 Commit
 
 ```bash
 git commit --amend
 ```
 
-也可以直接修改 Commit Message：
+如果不想修改原本的 Commit Message：
 
 ```bash
-git commit --amend -m "修改功能"
+git commit --amend --no-edit
 ```
 
-### 3. 如果原本已經 Push 到 GitHub
-
-需要強制更新遠端：
+如果 Commit 已經 Push 到 GitHub，需要強制更新遠端：
 
 ```bash
 git push --force
 ```
 
 > ⚠️ `git push --force` 會覆蓋遠端的 Commit History。
-> 使用前請確認該 Commit 是自己的，避免影響其他人的修改。
+> 確認該 Commit 是自己的，且不會影響其他人的修改後再使用。
 
 ---
 
@@ -200,7 +198,7 @@ git reset --hard HEAD^
 
 ## 已經 Push 到 GitHub
 
-如果最後一次 Commit 已經 Push 到遠端：
+如果 Commit 已經推送到遠端：
 
 ```bash
 git reset --hard HEAD^
@@ -215,7 +213,7 @@ git push --force
 
 # Feature Branch
 
-開發新功能時，可以使用 Feature Branch，避免直接修改 `main`。
+開發新功能時，可以建立 Feature Branch，避免直接修改 `main`。
 
 ### 建立並切換到 Feature Branch
 
@@ -270,9 +268,9 @@ git push origin main
 
 ---
 
-# 查看資訊
+# 查看 Branch
 
-## 查看目前有哪些 Branch
+查看目前有哪些 Branch：
 
 ```bash
 git branch
@@ -283,9 +281,46 @@ git branch
 ```text
 * main
   feature
+  function_B
 ```
 
-## 查看目前有哪些修改
+---
+
+# 清理多餘 Branch
+
+當 Feature Branch 已經完成 Merge，可以刪除不再使用的 Branch。
+
+## 刪除本地 Branch
+
+```bash
+git branch -D function_B
+```
+
+或：
+
+```bash
+git branch -D feature
+```
+
+> `-D` 即使 Branch 尚未 Merge 也會強制刪除，使用前請確認 Branch 中沒有需要保留的 Commit。
+
+## 刪除 GitHub 遠端 Branch
+
+```bash
+git push origin --delete function_B
+```
+
+或：
+
+```bash
+git push origin --delete feature
+```
+
+---
+
+# 查看目前修改
+
+使用：
 
 ```bash
 git status
@@ -293,32 +328,36 @@ git status
 
 可以查看：
 
+* 目前所在的 Branch
 * 哪些檔案被修改
 * 哪些檔案尚未加入 Staging Area
-* 哪些檔案已經加入 Staging Area
-* 目前所在的 Branch
+* 哪些檔案已加入 Staging Area
+* 是否有尚未 Commit 的變更
 
 ---
 
 # 常用 Git 指令
 
-| 功能             | 指令                            |
-| -------------- | ----------------------------- |
-| 初始化 Git        | `git init`                    |
-| 查看修改           | `git status`                  |
-| 加入所有檔案         | `git add .`                   |
-| 建立 Commit      | `git commit -m "message"`     |
-| 修改最近一次 Commit  | `git commit --amend`          |
-| 查看 Branch      | `git branch`                  |
-| 查看 Remote      | `git remote -v`               |
-| 新增 Remote      | `git remote add origin <URL>` |
-| Push           | `git push`                    |
-| Push 指定 Branch | `git push origin <branch>`    |
-| 強制 Push        | `git push --force`            |
-| 建立並切換 Branch   | `git checkout -b <branch>`    |
-| 切換 Branch      | `git checkout <branch>`       |
-| 合併 Branch      | `git merge <branch>`          |
-| 刪除最後一次 Commit  | `git reset --hard HEAD^`      |
+| 功能                     | 指令                                  |
+| ---------------------- | ----------------------------------- |
+| 初始化 Git                | `git init`                          |
+| 查看目前修改                 | `git status`                        |
+| 加入所有檔案                 | `git add .`                         |
+| 建立 Commit              | `git commit -m "message"`           |
+| 修改最近一次 Commit          | `git commit --amend`                |
+| 修改 Commit 且保留原 Message | `git commit --amend --no-edit`      |
+| 查看 Branch              | `git branch`                        |
+| 查看 Remote              | `git remote -v`                     |
+| 新增 Remote              | `git remote add origin <URL>`       |
+| Push                   | `git push`                          |
+| Push 指定 Branch         | `git push origin <branch>`          |
+| 強制 Push                | `git push --force`                  |
+| 建立並切換 Branch           | `git checkout -b <branch>`          |
+| 切換 Branch              | `git checkout <branch>`             |
+| 合併 Branch              | `git merge <branch>`                |
+| 刪除本地 Branch            | `git branch -D <branch>`            |
+| 刪除遠端 Branch            | `git push origin --delete <branch>` |
+| 刪除最後一次 Commit          | `git reset --hard HEAD^`            |
 
 ---
 
@@ -339,7 +378,7 @@ git push
 # 建立並切換 Feature Branch
 git checkout -b feature
 
-# 修改程式碼後
+# 修改程式碼
 git status
 git add .
 git commit -m "新增功能或修正"
@@ -355,4 +394,8 @@ git merge feature
 
 # Push main
 git push origin main
+
+# 如果 feature 已經不需要
+git branch -D feature
+git push origin --delete feature
 ```
