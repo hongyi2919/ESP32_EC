@@ -1,5 +1,6 @@
-//#include <WiFi.h>
-//#include <HTTPClient.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <vector>
 
 #define Ringa  25
 #define Record 26
@@ -18,6 +19,7 @@ const char* apiKey = "yourAPIkey";
 
 int interval = 200;
 int tone[1000];
+vector<int>tones;
 bool RecordisPressed = false;
 bool SoisPressed = false;
 bool isLongPressed = false;
@@ -30,7 +32,7 @@ int x = 0;
 
 // 蜂鳴器播放函式
 void alarmSnd() {
-  byte tonesize = 0;
+  byte tonesize = tones.size();
   static uint8_t i = 0;
   for (i = 0; i < 1000; i++) {
     if (tone[i] != 0) 
@@ -38,9 +40,10 @@ void alarmSnd() {
   }
 
   for (i = 0; i < tonesize; i++) {
-    ledcWriteTone(0, tone[i]);//通道 0
-    delay(interval);
+    ledcWriteTone(0, tone[i]);    // 通道 0
+    delay(interval);              // 固定長度
   }
+  ledcWriteTone(0, 0);        // 播放結束後停音
 }
 
 // 上傳資料至 ThingSpeak
@@ -119,8 +122,9 @@ void loop() {
   for (int i = 0; i < 7; i++) {
     if (digitalRead(notePins[i]) == LOW) {   // 按下某個音階鍵
       if (RECORD == 1) {                     // 如果在錄音模式
-        tone[x] = noteFreqs[i];              // 存對應頻率
-        x++;
+        //tone[x] = noteFreqs[i];              
+        //x++;
+        tones.push_back(noteFreqs[i]);       // 存對應頻率
       }
     }
   }
