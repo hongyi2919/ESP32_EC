@@ -4,9 +4,9 @@ ESP32 EC（Embedded Controller）開發專案。
 
 ---
 
-## GitHub Repository
+## GitHub 專案上傳
 
-### 建立 Repository
+### 1. 建立 GitHub Repository
 
 1. 登入 GitHub，點擊右上角 **`+` → `New repository`**。
 2. 輸入 `Repository name`，例如：
@@ -14,13 +14,13 @@ ESP32 EC（Embedded Controller）開發專案。
    ```text
    ESP32_EC
    ```
-3. 不要勾選：
+3. 不要勾選以下選項：
 
    * `Add a README file`
    * `.gitignore`
    * `Choose a license`
 4. 點擊 **Create repository**。
-5. 複製 GitHub 顯示的 HTTPS URL。
+5. 複製 GitHub 顯示的 HTTPS Repository URL。
 
 例如：
 
@@ -28,11 +28,12 @@ ESP32 EC（Embedded Controller）開發專案。
 https://github.com/hongyi2919/ESP32_EC.git
 ```
 
-> 建議建立空的 Repository，避免本地與遠端 Repository 的 Commit History 不一致。
+> 建議建立一個空的 Repository，避免 GitHub 遠端 Repository 與本地 Repository 的 Commit History 不一致。
 
 ---
 
-# 本地端 Git 設定
+## 本地端 Git 設定
+>>>>>>> 4e832db03128b3e392d1d23abe33ce4bc000a5a0
 
 進入專案資料夾：
 
@@ -58,13 +59,13 @@ git init
 echo "# ESP32_EC" >> README.md
 ```
 
-### 3. 將所有檔案加入 Staging Area
+### 3. 加入所有檔案
 
 ```bash
 git add .
 ```
 
-### 4. 查看目前狀態
+### 4. 確認 Staging Area
 
 ```bash
 git status
@@ -72,13 +73,13 @@ git status
 
 確認需要的檔案已經被加入 Staging Area。
 
-### 5. 建立 Commit
+### 5. 建立第一個 Commit
 
 ```bash
 git commit -m "initial commit"
 ```
 
-### 6. 設定 GitHub Remote
+### 6. 設定遠端 Repository
 
 ```bash
 git remote add origin https://github.com/hongyi2919/ESP32_EC.git
@@ -141,10 +142,13 @@ git commit -m "新增功能或修正"
 git push
 ```
 
-如果要指定 Push 的 Branch：
+例如：
 
 ```bash
-git push origin feature
+git add .
+git commit -m "add power sequence"
+git push
+>>>>>>> 4e832db03128b3e392d1d23abe33ce4bc000a5a0
 ```
 
 ---
@@ -206,41 +210,66 @@ git reset --hard HEAD^
 git reset --hard HEAD^
 git push --force
 ```
+流程：
 
-執行後，GitHub 遠端 Branch 也會回到上一個 Commit。
-
-> ⚠️ 此操作會改寫遠端 Commit History，請謹慎使用。
+```text
+本地刪除最後一次 Commit
+        ↓
+git reset --hard HEAD^
+        ↓
+本地回到上一個 Commit
+        ↓
+git push --force
+        ↓
+GitHub 回到上一個 Commit
+```
 
 ---
 
 # Feature Branch
 
-開發新功能時，可以使用 Feature Branch，避免直接修改 `main`。
+開發新功能時，可以建立 Feature Branch，避免直接修改 `main`。
 
-### 建立並切換到 Feature Branch
+## 建立並切換到 Feature Branch
+>>>>>>> 4e832db03128b3e392d1d23abe33ce4bc000a5a0
 
 ```bash
 git checkout -b feature
 ```
 
-### 開發完成後建立 Commit
+例如：
 
 ```bash
-git add .
-git commit -m "新增功能或修正"
+git checkout -b feature/power-sequence
 ```
 
-### Push Feature Branch
+## 將 Feature Branch Push 到 GitHub
 
 ```bash
-git push origin feature
+git push -u origin feature
+```
+
+之後可以直接使用：
+
+```bash
+git push
+>>>>>>> 4e832db03128b3e392d1d23abe33ce4bc000a5a0
 ```
 
 ---
 
-# 合併分支
 
-假設要將 `feature` 合併到 `main`。
+# 合併 Branch
+
+假設目前有：
+
+```text
+main
+feature
+```
+
+要將 `feature` 合併到 `main`。
+>>>>>>> 4e832db03128b3e392d1d23abe33ce4bc000a5a0
 
 ### 1. 切換到 main
 
@@ -254,7 +283,8 @@ git checkout main
 git merge feature
 ```
 
-### 3. Push 到 GitHub
+
+### 3. Push main 到 GitHub
 
 ```bash
 git push origin main
@@ -310,11 +340,16 @@ git status
 | 建立 Commit      | `git commit -m "message"`     |
 | 修改最近一次 Commit  | `git commit --amend`          |
 | 查看 Branch      | `git branch`                  |
+| 查看狀態           | `git status`                  |
+| 加入所有檔案         | `git add .`                   |
+| 建立 Commit      | `git commit -m "message"`     |
+| 修改最近一次 Commit  | `git commit --amend`          |
 | 查看 Remote      | `git remote -v`               |
 | 新增 Remote      | `git remote add origin <URL>` |
 | Push           | `git push`                    |
 | Push 指定 Branch | `git push origin <branch>`    |
 | 強制 Push        | `git push --force`            |
+| 查看 Branch      | `git branch`                  |
 | 建立並切換 Branch   | `git checkout -b <branch>`    |
 | 切換 Branch      | `git checkout <branch>`       |
 | 合併 Branch      | `git merge <branch>`          |
@@ -355,4 +390,3 @@ git merge feature
 
 # Push main
 git push origin main
-```
