@@ -10,8 +10,8 @@
 #define Mi     34
 #define Fa     35
 #define So     36
-#define La     39
-#define Si     23
+//#define La     39
+//#define Si     23
 using namespace std;
 
 const char* ssid = "yourSSID";
@@ -92,8 +92,8 @@ void setup() {
   pinMode(Mi, INPUT_PULLUP);
   pinMode(Fa, INPUT_PULLUP);
   pinMode(So, INPUT_PULLUP);
-  pinMode(La, INPUT_PULLUP);
-  pinMode(Si, INPUT_PULLUP);
+  //pinMode(La, INPUT_PULLUP);
+  //pinMode(Si, INPUT_PULLUP);
 }
 
 // 按鍵偵測
@@ -106,13 +106,13 @@ void checkSwitch() {
   }
 }
 
-bool FirstTouch[7] = {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH};
-const int notePins[7] = {Do, Re, Mi, Fa, So, La, Si};
-const int noteFreqs[7] = {262, 294, 330, 349, 392, 440, 494}; // Do~Si 頻率
+bool FirstTouch[5] = {HIGH, HIGH, HIGH, HIGH, HIGH}; //, HIGH, HIGH
+const int notePins[5] = {Do, Re, Mi, Fa, So};  //, La, Si
+const int noteFreqs[5] = {262, 294, 330, 349, 392}; // Do~Si 頻率  , 440, 494
 void recordPins()
 {
     // 迴圈檢查七個音階按鍵
-  for (int i = 0; i < 7; i++)
+  for (int i = 0; i < 5; i++)
   {
     if (digitalRead(notePins[i]) == LOW && FirstTouch[i] == HIGH) 
     {   // 按下某個音階鍵

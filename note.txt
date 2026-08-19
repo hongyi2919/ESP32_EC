@@ -68,3 +68,6 @@ git push origin --delete feature
 查看有哪些修改
 git status
 hello
+
+查看git graph
+git log --oneline --graph --decorate --all
