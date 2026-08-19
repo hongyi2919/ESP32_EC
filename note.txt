@@ -54,6 +54,12 @@ git push origin feature
 合併分支
 git checkout main                # 切換到目標分支
 git merge feature                # 合併 feature-name 到 main
+如果遇到衝突
+fatal: You are in the middle of a merge -- cannot amend
+解決後
+git add .
+git commit
+最後再推送
 git push origin main             # 推送到github
 
 查看分支
@@ -69,5 +75,5 @@ git push origin --delete feature
 git status
 hello
 
-查看git graph
+看分支圖
 git log --oneline --graph --decorate --all
