@@ -12,13 +12,14 @@
 #define So     36
 #define La     39
 #define Si     23
+using namespace std;
 
 const char* ssid = "yourSSID";
 const char* password = "yourPassword";
 const char* apiKey = "yourAPIkey";
 
 int interval = 200;
-int tone[1000];
+//int tone[1000];
 vector<int>tones;
 bool RecordisPressed = false;
 bool SoisPressed = false;
@@ -26,21 +27,16 @@ bool isLongPressed = false;
 unsigned long pressTime = 0, lastHoldTime = 0;
 const unsigned long longPressTime = 1000;
 const unsigned long holdTime = 500;
-const unsigned long debounceTime = 50;
-int RECORD = 0;
+//const unsigned long debounceTime = 50;
+bool RECORD = false;
 int x = 0;
 
 // 蜂鳴器播放函式
 void alarmSnd() {
-  byte tonesize = tones.size();
-  static uint8_t i = 0;
-  for (i = 0; i < 1000; i++) {
-    if (tone[i] != 0) 
-    tonesize++;
-  }
+  int tonesize = tones.size();
 
   for (i = 0; i < tonesize; i++) {
-    ledcWriteTone(0, tone[i]);    // 通道 0
+    ledcWriteTone(0, tones[i]);    // 通道 0
     delay(interval);              // 固定長度
   }
   ledcWriteTone(0, 0);        // 播放結束後停音
@@ -48,7 +44,6 @@ void alarmSnd() {
 
 // 上傳資料至 ThingSpeak
 void sendData() { 
-  char music[2];
   int upload = 0;
 
   HTTPClient http;
@@ -97,35 +92,40 @@ void setup() {
   pinMode(Mi, INPUT_PULLUP);
   pinMode(Fa, INPUT_PULLUP);
   pinMode(So, INPUT_PULLUP);
-  //pinMode(La, INPUT_PULLUP);
-  //pinMode(Si, INPUT_PULLUP);
+  pinMode(La, INPUT_PULLUP);
+  pinMode(Si, INPUT_PULLUP);
 }
 
 // 按鍵偵測
 void checkSwitch() {
   if (digitalRead(Record) == LOW && !RecordisPressed) {
     RecordisPressed = true;
-    RECORD = (RECORD == 1) ? 0 : 1;   // 按一次切換錄製狀態
+    RECORD = if (RECORD) ? false : true;   // 按一次切換錄製狀態
   } else if (digitalRead(Record) == HIGH) {
     RecordisPressed = false;          // 放開按鍵，重置狀態
   }
 }
 
-
+bool FirstTouch[7] = {HIGH, HIGH, HIGH, HIGH, HIGH, HIGH, HIGH};
 const int notePins[7] = {Do, Re, Mi, Fa, So, La, Si};
 const int noteFreqs[7] = {262, 294, 330, 349, 392, 440, 494}; // Do~Si 頻率
-// 範例按鍵處理
-void loop() {
-  checkSwitch(); // 檢查 Record 鍵
-
-  // 迴圈檢查七個音階按鍵
-  for (int i = 0; i < 7; i++) {
-    if (digitalRead(notePins[i]) == LOW) {   // 按下某個音階鍵
+void recordPins()
+{
+    // 迴圈檢查七個音階按鍵
+  for (int i = 0; i < 7; i++)
+  {
+    if (digitalRead(notePins[i]) == LOW && FirstTouch[i] == HIGH) 
+    {   // 按下某個音階鍵
       if (RECORD == 1) {                     // 如果在錄音模式
-        //tone[x] = noteFreqs[i];              
-        //x++;
         tones.push_back(noteFreqs[i]);       // 存對應頻率
       }
     }
+    // after touch return LOW,放開後就變 HIGH
+    FirstTouch[i] = digitalRead(notePins[i]); 
   }
+}
+void loop() {
+  checkSwitch(); // 檢查 Record 鍵
+  recordPins();  // 紀錄music
+  
 }
