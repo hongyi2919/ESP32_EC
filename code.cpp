@@ -127,5 +127,4 @@ void recordPins()
 void loop() {
   checkSwitch(); // 檢查 Record 鍵
   recordPins();  // 紀錄music
-  
 }
